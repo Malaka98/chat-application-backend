@@ -25,7 +25,7 @@ module.exports = {
 
     addUser: async (req, res) => {
         try {
-            const user = new UserDto(req.body["first_name"], req.body["last_name"], req.body["username"],
+            const user = new UserDto(req.body["id"], req.body["first_name"], req.body["last_name"], req.body["username"],
                 req.body["password"], req.body["address"], req.body["email"], req.body["phone_number"])
 
             const response = await userService.addUserService(user)

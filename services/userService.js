@@ -15,8 +15,27 @@ module.exports = {
     },
 
     addUserService: async (userDto) => {
-        const userModel = new user({...userDto})
-        return await userRepository.addUser(userModel)
+        const newUser = {...userDto}
+        const userList = await userRepository.getAllUsers()
+
+        // Generate the roomId object
+        userList.forEach((existingUser) => {
+            let roomId = {};
+            roomId[newUser.id] = `room-${newUser.id}-${existingUser.id}`;
+            existingUser.roomId = {...existingUser.roomId, ...roomId};
+        });
+
+        newUser.roomId = {};
+        userList.forEach((existingUser) => {
+            let roomId = {};
+            roomId[existingUser.id] = `room-${newUser.id}-${existingUser.id}`;
+            newUser.roomId = {...newUser.roomId, ...roomId};
+        });
+
+        const userModel = new user({...newUser})
+        await userRepository.addUser(userModel)
+        await userRepository.updateUserList(userList)
+        return newUser
     },
 
     findUserByIdService: async (id) => {

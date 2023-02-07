@@ -34,5 +34,25 @@ module.exports = {
             console.log("Error" + e.message)
             throw new Error(e.message)
         }
+    },
+
+    getAllUsers: async () => {
+        try {
+            return await user.find()
+        } catch (e) {
+            console.log("Error" + e.message)
+            throw new Error(e.message)
+        }
+    },
+
+    updateUserList: async (userList) => {
+        try {
+            await Promise.all(userList.map(async item => {
+                return user.findOneAndUpdate({id: item.id}, item, {upsert: true});
+            }))
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 }

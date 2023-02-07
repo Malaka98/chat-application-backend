@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+    id: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     first_name: {
         type: String,
         required: true,
@@ -37,6 +42,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    roomId: {
+        type: Object,
+        required: true
+    }
 });
 
 const user = mongoose.model("users", userSchema);
